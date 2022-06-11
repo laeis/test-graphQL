@@ -1,0 +1,25 @@
+version: "2.1"
+
+services:
+  test-grapthql-db:
+    container_name: test-grapthql-db
+    image: postgres:10
+    ports:
+      - 5430:5432
+    environment:
+      - POSTGRES_DB=test-grapthql
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234567
+    command: postgres -c listen_addresses='*'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./data/test-grapthql-db:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    ports:
+      - 5431:8080
